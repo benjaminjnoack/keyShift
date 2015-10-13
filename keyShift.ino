@@ -41,9 +41,12 @@ void loop()
 {
 	int i;
 
-	for (i = 0; i < 12; ++i)
-		if (digitalRead(pins[i]))
+	for (i = 0; i < 12; ++i) {
+		if (digitalRead(pins[i])) {
 			shiftByte(i);
+			delay(DEBOUNCE);
+		}
+	}
 }
 
 void shiftByte(int i)
@@ -51,5 +54,4 @@ void shiftByte(int i)
 	digitalWrite(LATCH, LOW);
 	shiftOut(DATA, CLOCK, MSBFIRST, keys[i]);
 	digitalWrite(LATCH, HIGH);
-	delay(DEBOUNCE);
 }
