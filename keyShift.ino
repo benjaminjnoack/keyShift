@@ -23,7 +23,6 @@ byte keys[] = {B11101110, B11100000, B01100110, B01100000, B11111100, B11111110,
 
 void setup() 
 {
-	Serial.begin(9600);
 	int i;
 	for (i = 0; i <= 12; ++i)
 		pinMode(pins[i], INPUT);
@@ -58,8 +57,8 @@ void shiftByte(int index)
 	
 	digitalWrite(LATCH, LOW);
 	
-	for (i = 0; i < 8; i++){
-	    digitalWrite(DATA, !!(key & (1 << (7 - i))));
+	for (i = 7; i >= 0; i--){
+	    digitalWrite(DATA, !!(key & (1 << i)));
 	    //shift 1, starting at index 0, left up to a max of index 7. 
 	    //Take the boolean equivalant of anding with the key at that index.
 	    digitalWrite(CLOCK, HIGH);
