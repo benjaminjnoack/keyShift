@@ -49,9 +49,22 @@ void loop()
 	}
 }
 
-void shiftByte(int i)
+void shiftByte(int index)
 {
+	int i;
+	byte key;
+
+	key = keys[index];
+	
 	digitalWrite(LATCH, LOW);
-	shiftOut(DATA, CLOCK, MSBFIRST, keys[i]);
+	
+	for (i = 0; i < 8; i++){
+	    digitalWrite(DATA, !!(key & (1 << (7 - i))));
+	    //shift 1, starting at index 0, left up to a max of index 7. 
+	    //Take the boolean equivalant of anding with the key at that index.
+	    digitalWrite(CLOCK, HIGH);
+	    digitalWrite(CLOCK, LOW);
+	}
+	
 	digitalWrite(LATCH, HIGH);
 }
