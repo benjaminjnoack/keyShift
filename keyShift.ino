@@ -18,6 +18,8 @@
 
 #define DEBOUNCE 250
 
+void shiftByte(byte key);
+
 int pins[] = {STAR, SEVEN, FOUR, ONE, ZERO, EIGHT, FIVE, TWO, HASH, NINE, SIX, THREE};
 byte keys[] = {B11101110, B11100000, B01100110, B01100000, B11111100, B11111110, B10110110, B11011010, B01101110, B11100110, B00111110, B11110010};
 
@@ -31,9 +33,7 @@ void setup()
 	pinMode(CLOCK, OUTPUT);
 	pinMode(DATA, OUTPUT);
 
-	digitalWrite(LATCH, LOW);
-	shiftOut(DATA, CLOCK, MSBFIRST, B00000000);
-	digitalWrite(LATCH, HIGH);
+	shiftByte(B00000000);
 }
 
 void loop() 
@@ -42,18 +42,15 @@ void loop()
 
 	for (i = 0; i < 12; ++i) {
 		if (digitalRead(pins[i])) {
-			shiftByte(i);
+			shiftByte(keys[i]);
 			delay(DEBOUNCE);
 		}
 	}
 }
 
-void shiftByte(int index)
+void shiftByte(byte key)
 {
 	int i;
-	byte key;
-
-	key = keys[index];
 	
 	digitalWrite(LATCH, LOW);
 	
